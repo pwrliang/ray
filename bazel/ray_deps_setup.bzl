@@ -89,11 +89,12 @@ def ray_deps_setup():
     # This is copied from grpc's bazel/grpc_deps.bzl
     http_archive(
         name = "com_google_protobuf",
-        sha256 = "76a33e2136f23971ce46c72fd697cd94dc9f73d56ab23b753c3e16854c90ddfd",
-        strip_prefix = "protobuf-2c5fa078d8e86e5f4bd34e6f4c9ea9e8d7d4d44a",
+        sha256 = "8766fce06ef41d79cb6037d04be37df3d5c493d9da92517a7243640d6389f03c",
+        strip_prefix = "protobuf-10ef3f77683f77fb3c059bf47725c27b3ff41e63",
         urls = [
-            # https://github.com/protocolbuffers/protobuf/commits/v23.4
-            "https://github.com/protocolbuffers/protobuf/archive/2c5fa078d8e86e5f4bd34e6f4c9ea9e8d7d4d44a.tar.gz",
+            # https://github.com/protocolbuffers/protobuf/commits/v28.1
+            "https://storage.googleapis.com/grpc-bazel-mirror/github.com/protocolbuffers/protobuf/archive/10ef3f77683f77fb3c059bf47725c27b3ff41e63.tar.gz",
+            "https://github.com/protocolbuffers/protobuf/archive/10ef3f77683f77fb3c059bf47725c27b3ff41e63.tar.gz",
         ],
         patches = [
             "@com_github_grpc_grpc//third_party:protobuf.patch",
@@ -214,11 +215,17 @@ def ray_deps_setup():
     # This is how diamond dependencies are prevented.
     auto_http_archive(
         name = "com_google_absl",
-        sha256 = "5366d7e7fa7ba0d915014d387b66d0d002c03236448e1ba9ef98122c13b35c36",
-        strip_prefix = "abseil-cpp-20230125.3",
-        urls = [
-            "https://github.com/abseil/abseil-cpp/archive/20230125.3.tar.gz",
-        ],
+        # sha256 = "5366d7e7fa7ba0d915014d387b66d0d002c03236448e1ba9ef98122c13b35c36",
+        # strip_prefix = "abseil-cpp-20230125.3",
+        # urls = [
+        #     "https://github.com/abseil/abseil-cpp/archive/20230125.3.tar.gz",
+        # ],
+            sha256 = "f50e5ac311a81382da7fa75b97310e4b9006474f9560ac46f54a9967f07d4ae3",
+            strip_prefix = "abseil-cpp-20240722.0",
+            urls = [
+                "https://storage.googleapis.com/grpc-bazel-mirror/github.com/abseil/abseil-cpp/archive/20240722.0.tar.gz",
+                "https://github.com/abseil/abseil-cpp/archive/20240722.0.tar.gz",
+            ],
     )
 
     # OpenCensus depends on jupp0r/prometheus-cpp
@@ -234,11 +241,21 @@ def ray_deps_setup():
         ],
     )
 
-    auto_http_archive(
+    # auto_http_archive(
+    #    name = "com_github_grpc_grpc",
+         # NOTE: If you update this, also update @boringssl's hash.
+    #    url = "https://github.com/grpc/grpc/archive/refs/tags/v1.57.1.tar.gz",
+    #    sha256 = "0762f809b9de845e6a7c809cabccad6aa4143479fd43b396611fe5a086c0aeeb",
+    #    patches = [
+    #        "@com_github_ray_project_ray//thirdparty/patches:grpc-cython-copts.patch",
+    #    ],
+    #)
+
+    git_repository(
         name = "com_github_grpc_grpc",
         # NOTE: If you update this, also update @boringssl's hash.
-        url = "https://github.com/grpc/grpc/archive/refs/tags/v1.57.1.tar.gz",
-        sha256 = "0762f809b9de845e6a7c809cabccad6aa4143479fd43b396611fe5a086c0aeeb",
+        remote = "https://github.com/pwrliang/grpc-rdma.git",
+        branch = "dev",
         patches = [
             "@com_github_ray_project_ray//thirdparty/patches:grpc-cython-copts.patch",
         ],
@@ -283,10 +300,10 @@ def ray_deps_setup():
         # https://github.com/grpc/grpc/blob/1ff1feaa83e071d87c07827b0a317ffac673794f/bazel/grpc_deps.bzl#L189
         # Ensure this rule matches the rule used by grpc's bazel/grpc_deps.bzl
         name = "boringssl",
-        sha256 = "0675a4f86ce5e959703425d6f9063eaadf6b61b7f3399e77a154c0e85bad46b1",
-        strip_prefix = "boringssl-342e805bc1f5dfdd650e3f031686d6c939b095d9",
+        sha256 = "c70d519e4ee709b7a74410a5e3a937428b8198d793a3d771be3dd2086ae167c8",
+        strip_prefix = "boringssl-b8b3e6e11166719a8ebfa43c0cde9ad7d57a84f6",
         urls = [
-            "https://github.com/google/boringssl/archive/342e805bc1f5dfdd650e3f031686d6c939b095d9.tar.gz",
+            "https://github.com/google/boringssl/archive/b8b3e6e11166719a8ebfa43c0cde9ad7d57a84f6.tar.gz",
         ],
     )
 
@@ -363,3 +380,4 @@ def ray_deps_setup():
         sha256 = "2db82d1e7119df3e71b7640219b6dfe84789bc0537983c3b7ac4f7189aecfeaa",
         strip_prefix = "jemalloc-5.3.0",
     )
+

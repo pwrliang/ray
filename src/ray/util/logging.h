@@ -301,10 +301,10 @@ class RayLog {
   template <typename T>
   RayLog &operator<<(const T &t) {
     if (IsEnabled()) {
-      msg_osstream_ << t;
+      // msg_osstream_ << t;
     }
     if (IsFatal()) {
-      expose_fatal_osstream_ << t;
+      // expose_fatal_osstream_ << t;
     }
     return *this;
   }
